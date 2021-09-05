@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import desoc from "../../assets/images/Desoc.svg";
-import axios from 'axios';
-
+import axios from "axios";
+import { withSnackbar } from "react-simple-snackbar";
 
 export class Register extends Component {
   constructor(props) {
@@ -28,6 +28,20 @@ export class Register extends Component {
   }
   onSubmit(e) {
     e.preventDefault();
+    const { openSnackbar } = this.props;
+    if (
+      this.state.name === "" ||
+      this.state.message === "" ||
+      this.state.email === "" ||
+      this.state.username === "" ||
+      this.state.password === "" ||
+      this.state.password2 === "" ||
+      this.state.phonenumber === ""
+    ) {
+      openSnackbar("Please fill all details");
+    } else {
+      openSnackbar("Back to login page");
+    }
 
     const newuser = {
       name: this.state.name,
@@ -37,10 +51,10 @@ export class Register extends Component {
       password2: this.state.password2,
       phonenumber: this.state.phonenumber,
     };
-    axios.post('api/users/register' ,newuser)
-     .then(res=> console.log(res.data))
-     .catch(err=> console.log(err.response.data))
-    
+    axios
+      .post("api/users/register", newuser)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.response.data));
   }
   componentDidMount() {
     if (this.props.password) {
@@ -148,7 +162,7 @@ export class Register extends Component {
   }
 }
 
-export default Register;
+export default withSnackbar(Register);
 
 // import React, { Component } from "react";
 // import ReactDOM from "react-dom";
